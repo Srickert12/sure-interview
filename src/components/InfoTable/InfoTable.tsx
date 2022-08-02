@@ -10,9 +10,14 @@ import {
   Box,
 } from '@mui/material';
 
+export type TInfoTableRow = {
+  key: string;
+  value: string | number;
+};
+
 type TInfoTable = {
   header: string;
-  rows: { key: string; value: string | number }[];
+  rows: TInfoTableRow[];
 } & BoxProps;
 
 function InfoTable({ header, rows, ...boxProps }: TInfoTable) {
@@ -24,8 +29,10 @@ function InfoTable({ header, rows, ...boxProps }: TInfoTable) {
       <TableContainer component={Paper}>
         <MuiTable sx={{ minWidth: { sm: 650 } }} aria-label="table">
           <TableBody>
-            {rows.map(({ key, value }) => (
-              <TableRow key={key}>
+            {rows.map(({ key, value }, index) => (
+              // using indexes for keys isn't ideal but only option here since the
+              // policyHolder data doesnt contain IDs
+              <TableRow key={`${key}-${index}`}>
                 <TableCell>{key}</TableCell>
                 <TableCell sx={{ whiteSpace: 'pre' }}>{value}</TableCell>
               </TableRow>
